@@ -1,48 +1,58 @@
-package com.test;
-import java.util.Scanner;
 
 
+    package com.test;
 
-	import org.openqa.selenium.By;
-	import org.openqa.selenium.WebDriver;
-	import org.openqa.selenium.WebElement;
-	import org.openqa.selenium.chrome.ChromeDriver;
+    import org.openqa.selenium.By;
+    import org.openqa.selenium.WebDriver;
+    import org.openqa.selenium.WebElement;
+    import org.openqa.selenium.chrome.ChromeDriver;
+    import org.testng.Assert;
+    import org.testng.annotations.AfterTest;
+    import org.testng.annotations.BeforeTest;
+    import org.testng.annotations.Test;
+
+import com.base.Base;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-public class LoginPageTest{
+    public class LoginPageTest extends Base{
+    
+        WebDriver driver;
 
-	
-	    public static void main(String[] args) {
-	       
-	        WebDriverManager.chromedriver().setup();
+        @BeforeTest
+        public void setup() {
+            WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+            driver.get("https://www.facebook.com/");
+            driver.manage().window().maximize();
+        }
 
-	        
-	        
-	        WebDriver driver = new ChromeDriver();
-	        
-	        
-	        driver.get("https://www.facebook.com/");
-	        
-	        
-	        WebElement usernameField = driver.findElement(By.id("email"));
-	        WebElement passwordField = driver.findElement(By.id("pass"));
-	        usernameField.sendKeys("shwetal");
-	        passwordField.sendKeys("123456@");
-	        WebElement clickable = driver.findElement(By.id("clickable"));
-	        clickable.click();
-	        
-	        WebElement loginButton = driver.findElement(By.id("loginbutton"));
-	        loginButton.click();
-	        
-	      
-	        
-	       
-	        driver.quit();
-	    }
-	}
+        @Test
+        public void loginTest() {
+            WebElement usernameField = driver.findElement(By.xpath("//input[@id='email']"));
+            WebElement passwordField = driver.findElement(By.xpath("//input[@id='pass']"));
+            WebElement loginButton = driver.findElement(By.xpath("//button[@name='login']"));
 
+            
+            usernameField.sendKeys("shwetal@gmail.com");
+            passwordField.sendKeys("shwetal");
 
+        
+            loginButton.click();
+            try {
+				Thread.sleep(7000);
+			} catch (InterruptedException e) {
+				
+				e.printStackTrace();
+			}
 
+           
+            String actualUrl = "https://www.facebook.com/";
+            String expectedUrl = driver.getCurrentUrl();
+            Assert.assertEquals(expectedUrl, actualUrl);
+        }
 
-
-	
+        @AfterTest
+        public void teardown() {
+            driver.quit();
+        }}
+    
