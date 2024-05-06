@@ -1,4 +1,4 @@
-package com.utility;
+package com.Utils;
 
 
 	import org.openqa.selenium.OutputType;
